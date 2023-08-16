@@ -13,59 +13,54 @@ class MenuItem {
   final IconData icon;
 }
 
-class SideBar extends StatelessWidget {
+class SideBar extends StatefulWidget {
   SideBar({super.key});
 
+  @override
+  State<SideBar> createState() => _SideBarState();
+}
+
+class _SideBarState extends State<SideBar> {
+  int selectedIndex = 0;
   List<MenuItem> menus = [
-    MenuItem("1", "Entrance", Icons.abc),
-    MenuItem("2", "Camping", Icons.sell),
-    MenuItem("3", "Pos", Icons.abc),
-    MenuItem("4", "Report", Icons.sell),
+    MenuItem("1", "Entrance", Icons.home),
+    MenuItem("2", "Camping", Icons.public),
+    MenuItem("3", "Pos", Icons.sell),
+    MenuItem("4", "Report", Icons.trending_up),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black,
+      color: Color.fromARGB(200, 0, 0, 0),
       width: 150,
-      alignment: Alignment.center,
-      // child: Container(
-      //   // alignment: Alignment.center,
-      //   color: Colors.amber,
-      //   height: 100,
-      //   child: Column(
-      //     children: [
-      //       Text(
-      //         "ddd",
-      //         style: TextStyle(color: Colors.white),
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      child: Container(
-        alignment: Alignment.center,
-        color: Colors.green,
-        child: Column(children: [
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           for (var item in menus)
-            Container(
-              color: Colors.amber,
-              padding: EdgeInsets.only(top: 25, bottom: 25),
-              height: 60,
-              child: Column(
+            ListTile(
+              selected: true,
+              hoverColor: Color.fromARGB(255, 62, 158, 237),
+              contentPadding: EdgeInsets.only(top: 20, bottom: 20),
+              title: Column(
                 children: [
                   Icon(
                     item.icon,
-                    size: 20,
+                    size: 28,
                     color: Colors.white,
                   ),
+                  SizedBox(height: 5),
                   Text(
                     item.title,
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ],
               ),
-            )
-        ]),
+              onTap: () {
+                // Navigator.pushNamed("/camping");
+              },
+            ),
+        ],
       ),
     );
   }
