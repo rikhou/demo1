@@ -23,7 +23,7 @@ class Layout extends StatelessWidget {
             Expanded(
               child: Navigator(
                 key: _navigatorKey,
-                initialRoute: routeCamping,
+                initialRoute: routePos,
                 onGenerateRoute: _onGenerateRoute,
               ),
             ),
