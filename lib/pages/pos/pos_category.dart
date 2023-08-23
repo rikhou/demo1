@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 
 class PosCategory extends StatelessWidget {
@@ -24,7 +26,7 @@ class PosCategory extends StatelessWidget {
                 shape: MaterialStateProperty.all(const RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero)),
               ),
-              onPressed: () => {},
+              onPressed: () async {},
               child: Text("Pinned(0)"),
             ),
             const VerticalDivider(thickness: 1, color: Colors.black12),

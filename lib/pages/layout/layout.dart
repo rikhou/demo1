@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../pos/index.dart';
 import "../camping/index.dart";
+import "../entrance/index.dart";
+import "../report/index.dart";
 import 'sideBar.dart';
-
-const routeCamping = '/camping';
-const routePos = '/pos';
+import './routes.dart';
+import "./header.dart";
 
 class Layout extends StatelessWidget {
   Layout({super.key});
@@ -13,22 +14,12 @@ class Layout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("dd"),
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        ),
-        body: Row(
-          children: [
-            SideBar(),
-            Expanded(
-              child: Navigator(
-                key: _navigatorKey,
-                initialRoute: routePos,
-                onGenerateRoute: _onGenerateRoute,
-              ),
-            ),
-          ],
-        ));
+      body: Navigator(
+        key: _navigatorKey,
+        initialRoute: routePos,
+        onGenerateRoute: _onGenerateRoute,
+      ),
+    );
   }
 
   Route _onGenerateRoute(RouteSettings settings) {
@@ -40,11 +31,29 @@ class Layout extends StatelessWidget {
       case routePos:
         page = PosPage();
         break;
+      case routeEntrance:
+        page = EntrancePage();
+        break;
+      case routeReport:
+        page = ReportPage();
+        break;
     }
 
     return MaterialPageRoute<dynamic>(
       builder: (context) {
-        return page;
+        return Row(
+          children: [
+            const SideBar(),
+            Expanded(
+              child: Column(
+                children: [
+                  Header(),
+                  Expanded(child: page),
+                ],
+              ),
+            ),
+          ],
+        );
       },
       settings: settings,
     );

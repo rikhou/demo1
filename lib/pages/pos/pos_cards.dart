@@ -1,47 +1,50 @@
 import 'package:flutter/material.dart';
-// import "./pos_card.dart";
+import '../../models/light_pos_product.dart';
 
-class PosProduct {
-  const PosProduct(this.name, this.price);
-  final String name;
-  final double price;
-}
+class PosCards extends StatelessWidget {
+  final LightPosProduct? data;
+  final String selectedProduct;
 
-class PosCards extends StatefulWidget {
-  const PosCards({super.key});
+  PosCards(
+    this.data,
+    this.selectedProduct, {
+    super.key,
+  });
 
-  @override
-  State<PosCards> createState() => _PosCardsState();
-}
+  getProduct(List<Products> products, String selectedProduct) {
+    if (selectedProduct == "") {
+      return products;
+    } else {
+      return products
+          .where((product) => product.name!
+              .toLowerCase()
+              .contains(selectedProduct.toLowerCase()))
+          .toList();
+    }
+  }
 
-class _PosCardsState extends State<PosCards> {
-  final List<PosProduct> products = const [
-    PosProduct('Eggs', 10),
-    PosProduct('b', 18),
-    PosProduct('c1', 6),
-    PosProduct('c2', 77),
-    PosProduct('c3', 22),
-    PosProduct('c5', 3),
-    PosProduct('c6', 4),
-  ];
-
+  // final List<PosProduct> products = const [
   @override
   Widget build(BuildContext context) {
+    final List<Products>? products =
+        getProduct(data!.products!, selectedProduct);
+    print(selectedProduct);
+
     return Expanded(
       child: GridView.builder(
         itemBuilder: (context, index) => PosCard(
-          product: products[index],
+          product: products![index],
         ),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3, childAspectRatio: 2 / 1),
-        itemCount: products.length,
+        itemCount: products!.length,
       ),
     );
   }
 }
 
 class PosCard extends StatelessWidget {
-  final PosProduct product;
+  final Products product;
   const PosCard({super.key, required this.product});
 
   @override
@@ -60,14 +63,14 @@ class PosCard extends StatelessWidget {
           children: [
             Container(
                 child: Text(
-              product.name,
+              product.name!,
               style: const TextStyle(fontWeight: FontWeight.w600),
             )),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "\$${product.price}",
+                  "\$10",
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
                 Icon(
