@@ -28,7 +28,6 @@ class PosCards extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Products>? products =
         getProduct(data!.products!, selectedProduct);
-    print(selectedProduct);
 
     return Expanded(
       child: GridView.builder(

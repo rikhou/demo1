@@ -34,15 +34,10 @@ class _PosPageState extends State<PosPage> {
                   child: Column(
                     children: [
                       PosTitle(
-                        data: posData,
-                        onSelected: (Products product) {
+                        posData: posData,
+                        onSelectedProduct: (productName) {
                           setState(() {
-                            selectedProduct = product.name!;
-                          });
-                        },
-                        onChanged: (text) {
-                          setState(() {
-                            selectedProduct = text;
+                            selectedProduct = productName;
                           });
                         },
                       ),

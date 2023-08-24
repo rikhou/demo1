@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import '../../models/light_pos_product.dart';
 
 class PosTitle extends StatelessWidget {
-  PosTitle(
-      {super.key,
-      required this.data,
-      required this.onSelected,
-      required this.onChanged});
+  PosTitle({
+    super.key,
+    required this.posData,
+    required this.onSelectedProduct,
+  });
 
-  final LightPosProduct? data;
-  final Function(Products) onSelected;
-  final Function(String) onChanged;
+  final LightPosProduct? posData;
+  final Function(String) onSelectedProduct;
+  String selectedProduct = '';
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +26,21 @@ class PosTitle extends StatelessWidget {
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
           ),
           SizedBox(
-            width: 300,
+            width: 350,
+            height: 50,
             child: Autocomplete<Products>(
               optionsBuilder: (TextEditingValue textEditingValue) {
                 return Future.delayed(const Duration(milliseconds: 50), () {
-                  return data!.products!
+                  return posData!.products!
                       .where((product) => product.name!
                           .toLowerCase()
                           .contains(textEditingValue.text.toLowerCase()))
                       .toList();
                 });
               },
-              onSelected: onSelected,
+              onSelected: (Products product) {
+                onSelectedProduct(product.name!);
+              },
               fieldViewBuilder: (BuildContext context,
                   TextEditingController textEditingController,
                   FocusNode focusNode,
@@ -45,15 +48,40 @@ class PosTitle extends StatelessWidget {
                 return TextField(
                   controller: textEditingController,
                   focusNode: focusNode,
-                  onChanged: onChanged,
+                  onChanged: (text) {
+                    selectedProduct = text;
+                  },
                   textInputAction: TextInputAction.search,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.all(10.0),
-                    hintText: 'Enter product name',
-                    hintStyle: TextStyle(color: Colors.black26),
-                    suffixIcon: Icon(Icons.search),
-                  ),
+                  decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      contentPadding: const EdgeInsets.all(10.0),
+                      hintText: 'Enter product name',
+                      hintStyle: const TextStyle(color: Colors.black26),
+                      suffixIcon: Container(
+                        margin: const EdgeInsets.only(right: 5),
+                        width: 100,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              textEditingController.text.isNotEmpty
+                                  ? IconButton(
+                                      icon: const Icon(Icons.cancel,
+                                          color: Colors.grey),
+                                      onPressed: () {
+                                        textEditingController.clear();
+                                        onSelectedProduct("");
+                                      },
+                                    )
+                                  : Container(),
+                              const VerticalDivider(),
+                              IconButton(
+                                icon: const Icon(Icons.search),
+                                onPressed: () {
+                                  onSelectedProduct(selectedProduct);
+                                },
+                              )
+                            ]),
+                      )),
                 );
               },
               displayStringForOption: (Products product) => '${product.name}',
